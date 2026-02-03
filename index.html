@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>❤️ Lipsy, Happy Valentine’s ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&family=DynaPuff:wght@400..700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    min-height:100vh;
+    background:radial-gradient(circle at center,#4a001d,#000 70%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+    color:#fff;
+  }
+b{
+color: #ffffff;
+  font-family: sans-serif;
+ /* font-size: 40px;*/
+
+  font-weight: bold;
+  /*background-color: #1a1a1a;  Dark background is a must for the glow to show! */
+ /* padding: 20px; */ 
+  text-align: center;
+text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 40px #00d4ff;
+}
+
+  /* 🌹 Falling Petals */
+  .petal{
+    position:fixed;
+    top:-40px;
+    width:18px;
+    height:18px;
+    background:radial-gradient(circle,#ff9aa2,#ff4d6d);
+    border-radius:50% 50% 50% 0;
+    transform:rotate(40deg);
+    opacity:.3;
+    pointer-events:none;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+
+  /* 💖 Floating Heart Bursts */
+  .heart-pop {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: flyUp 1.5s ease-out forwards;
+    z-index: 1000;
+  }
+  @keyframes flyUp {
+    0% { transform: translateY(0) scale(0.5); opacity: 1; }
+    100% { transform: translateY(-250px) scale(1.5) rotate(20deg); opacity: 0; }
+  }
+
+  /* ✉️ Envelope */
+  .envelope{
+    width:160px;
+    height:105px;
+    background:#fff;
+    border-radius:18px;
+    cursor:pointer;
+    position:absolute;
+    animation:bounce 2s infinite;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+  }
+  @keyframes bounce{50%{transform:translateY(-15px) scale(1.05)}}
+  .envelope::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:2px solid #ff8fab;
+    border-radius:18px;
+  }
+  .flap{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:80%;
+    background:linear-gradient(135deg,#ff8fab,#ff4d6d);
+    transform-origin:top;
+    transition:1s;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .envelope.open .flap{transform:rotateX(-180deg)}
+
+  /* 💌 Card Stack */
+  .card-stack{
+    display:none;
+    width:90%;
+    max-width:450px;
+    text-align:center;
+  }
+  .card{
+    background:rgba(28, 0, 10, 0.95);
+    border-radius:30px;
+    padding:30px;
+    min-height:480px;
+    border: 1px solid #ff00de;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    backdrop-filter: blur(10px);
+	  z-index: 10000;
+    box-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de, inset 0 0 15px #ff00de;
+  }
+
+  .card-gif {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border: 1px solid #bc13fe;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #bc13fe, 0 0 20px #bc13fe, inset 0 0 15px #bc13fe;
+  }
+
+  /* Transitions */
+  .exit-left{animation:exitLeft .45s forwards}
+  .exit-right{animation:exitRight .45s forwards}
+  .enter{animation:enter .5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards}
+
+  @keyframes exitLeft{to{opacity:0;transform:translateX(-100px) rotate(-5deg)}}
+  @keyframes exitRight{to{opacity:0;transform:translateX(100px) rotate(5deg)}}
+  @keyframes enter{from{opacity:0;transform:scale(0.8) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+  .ring-container { margin-bottom: 10px; position: relative; }
+  .ring{
+    width:70px;height:70px;
+    border:4px solid gold;
+    border-radius:50%;
+    box-shadow:0 0 20px gold;
+  }
+  .ring::after { content: "💎"; position: absolute; top: -15px; left: 22px; font-size: 1.5rem; }
+
+  h1{
+    font-family:'Playfair Display',serif;
+    font-size:1.8rem;
+    margin: 15px 0 10px;
+    color: #ff8fab;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+    h2{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;
+  margin: 15px 0 10px;
+  color: #000000;
+  /* padding-left: 20px;  */
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+   h3 {
+  display: flex;
+  justify-content: center; /* Centers text horizontally */
+  align-items: flex-end;   /* Aligns text to the bottom of the H3 box */
+  margin-bottom: 0px;      /* Fixed the typo from 'bootom' */
+  font-size: 65px;
+}
+ h4 {
+  display: flex;
+  justify-content: center;
+  margin-top: 0px;
+  font-size: 30px;
+  height: 7vh;
+  font-family: 'DynaPuff', cursive;
+  color: #ff85a1; /* Sweet Pink */
+  text-shadow: 1px 1px 0.1px #fbb1bd;
+  /* font-family: 'Great Vibes', cursive; */
+  color: #d63384;
+}
+  p{
+    font-size:1rem;
+    line-height:1.6;
+    color:#ffd9e1;
+    padding: 0 10px;
+  }
+
+  .choice{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    margin-top:25px;
+  }
+  .choice div{
+    padding:12px 28px;
+    border-radius:50px;
+    cursor:pointer;
+    background:#ff4d6d;
+    font-weight: 600;
+    transition:.3s;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+  }
+  .choice div:hover{transform:scale(1.1); background:#ff758f;}
+
+  .dots{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:20px;
+  }
+  .dot{
+    width:8px;height:8px;
+    background:rgba(255, 143, 171, 0.3);
+    border-radius:50%;
+    transition: 0.3s;
+  }
+  .dot.active{background:#ff4d6d; width: 22px; border-radius: 10px;}
+
+  /* Modal Styling */
+  .modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index: 2000;
+  }
+  .modal-content{
+    background:#2a0012;
+    padding:30px;
+    border-radius:25px;
+    width:90%;
+    max-width:380px;
+    text-align:center;
+    border: 1px solid #ff4d6d;
+    box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+  }
+  .modal-content h3 { font-size: 1.5rem; color: #ff8fab; margin-bottom: 15px; }
+  textarea{
+    width:100%;
+    height:100px;
+    border-radius:12px;
+    border:1px solid #ff4d6d;
+    padding:15px;
+    margin: 15px 0;
+    background: #1c000a;
+    color: white;
+    font-family: inherit;
+    outline: none;
+  }
+  .btn-send{
+    padding:12px 30px;
+    border:none;
+    border-radius:50px;
+    background:#ff4d6d;
+    color:#fff;
+    font-weight: 600;
+    cursor:pointer;
+    transition: 0.3s;
+  }
+  .btn-send:hover { background: #ff758f; transform: scale(1.05); }
+
+  /* SweetAlert Customization */
+  .swal2-popup {
+    background: #2a0012 !important;
+    border: 1px solid #ff00de !important;
+    color: #fff !important;
+    border-radius: 25px !important;
+  }
+  .swal2-title, .swal2-html-container { color: #fff !important; }
+  .swal2-confirm { background-color: #ff4d6d !important; border-radius: 50px !important; }
+  .swal2-cancel { background-color: #444 !important; border-radius: 50px !important; }
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope"><h3>❤️</h3><div class="flap"><h2>TAP ME</h2></div></div>
+
+<div class="card-stack" id="stack">
+  <div class="card enter" id="card"></div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3>💌message for me?</h3>
+    <textarea id="userMessage" placeholder="Type your heart out..."></textarea>
+    <button class="btn-send" onclick="saveOnline()">Send Message ❤️</button>
+  </div>
+</div>
+
+<iframe id="yt"
+src="https://www.youtube.com/embed/2ZVX075EWnA?enablejsapi=1&mute=1"
+allow="autoplay"
+style="display:none"></iframe>
+
+<script>
+const gifs = {
+  intro: "cute.gif",
+  rose: "ROSE.gif",
+  propose: "PROPOSE.gif",
+  food: "CHOCLATE.gif",
+  teddy: "TEDDY.gif",
+  promise: "PROMISE.gif",
+  hug: "HUG.gif",
+  kiss: "KISS.gif",
+  valentine: "VALENTINE.gif"
+};
+
+const cards=[
+ // {t:"Happy Valentine’s, Lipsy", m:"Those who are unattractive know that if someone loves them, they love them for who they truly are. Beautiful people never know whom to trust; perhaps that is why you don’t trust me ❤️", g: gifs.intro},
+ {t:"Happy Valentine’s, Lipsy", m:"The Mona Lisa would still be the greatest art… if your <b>smile</b> didn’t exist ❤️", g: gifs.intro},
+ {t:"🌹 Rose Day", m:"Every rose have <b>Thorns</b>, show me yours and I'll show you the hand willing to <b>bleed</b>", g: gifs.rose},
+ {t:"💍 Propose Day", m:"I found my peace the moment <b>I found you</b>. Now, I want to make sure I never have to look for it again. Will you do me the honor of spending <b>forever with me?</b>", g: gifs.propose},
+ {t:"🍫 Chocolate Day", m:"You melt my stress away just like chocolate. I hope I can be your chocolate one day, just as <b>you are mine.</b>" ,g: gifs.food},
+ {t:"🧸 Teddy Day", m:"I want to be the <b>comfort</b> you hold onto every night", g: gifs.teddy},
+ {t:"🤞 Promise Day", m:"I promise you that <b>I'll do my best</b> to understand you, to <b>love you</b> and only you in every <b>universe</b>.", g: gifs.promise},
+ {t:"🤗 Hug Day", m:"I want to be the person whose hug gives you <b>sakoon</b> from all your problems, because you are that person for me", g: gifs.hug},
+ {t:"💋 Kiss Day", m:"Your presence leaves <b>warmth</b> in my heart all day", g: gifs.kiss},
+ {t:"❤️ Valentine’s Day", m:"Any <b>message</b> for me?", g: gifs.valentine}
+];
+
+let index=0,startX=0;
+const card=document.getElementById("card");
+const dots=document.getElementById("dots");
+const yt=document.getElementById("yt").contentWindow;
+
+function createHeartPop() {
+  for(let i=0; i<3; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart-pop";
+    heart.innerHTML = ["❤️","🔥","💖","💘","✨","🌹","❤️‍🩹","💓","🫶","💎"][Math.floor(Math.random()*10)];
+    heart.style.left = (Math.random() * 80 + 10) + "vw";
+    heart.style.top = "80vh";
+    heart.style.animationDelay = (i * 0.2) + "s";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 1500);
+  }
+}
+
+// STYLED "NO" LOGIC
+async function handleNo() {
+  const result = await Swal.fire({
+    title: 'Oh gaala hi kad de?',
+    text: "par kush taan bhej 🥺",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Theek aa bhejdi an',
+    cancelButtonText: 'Nahin!'
+  });
+
+  if (result.isConfirmed) {
+    openModal();
+  } else {
+    const secondTry = await Swal.fire({
+      title: 'Dekh la...',
+      text: "bada time la ke code likya mein 🥺🙏",
+      showCancelButton: true,
+      confirmButtonText: 'Chl likh dendi an',
+      cancelButtonText: 'Rehan de'
+    });
+    
+    if(secondTry.isConfirmed) {
+      openModal();
+    } else {
+      Swal.fire({
+        title: '😊🌷',
+        text: 'Chal koi ni, inna dekhna v boht aa mere lyi',
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+  }
+}
+
+function render(){
+  const c=cards[index];
+  let html=`<h4>swipe miss</h4><img src="${c.g}" class="card-gif" alt="cute animation">`;
+  
+  if(c.t.includes("Propose")) {
+    html = `<div class="ring-container"><div class="ring"></div></div>` + html;
+  }
+  
+  html+=`<h1>${c.t}</h1><p>${c.m}</p>`;
+  
+  if(index===cards.length-1){
+    html+=`<div class="choice">
+            <div onclick="openModal()">YES 💖</div>
+            <div onclick="handleNo()">NO 😊</div>
+          </div>`;
+  }
+  
+  card.innerHTML=html;
+  dots.innerHTML=cards.map((_,i)=>`<div class="dot ${i===index?'active':''}"></div>`).join("");
+}
+
+function swipe(dir){
+  createHeartPop();
+  card.classList.remove("enter");
+  card.classList.add(dir==="left"?"exit-left":"exit-right");
+  
+  setTimeout(()=>{
+    index+=dir==="left"?1:-1;
+    card.className="card enter";
+    render();
+  },450);
+}
+
+card.onmousedown=e=>startX=e.clientX;
+card.onmouseup=e=>{
+  if(startX-e.clientX>60 && index<cards.length-1) swipe("left");
+  if(e.clientX-startX>60 && index>0) swipe("right");
+};
+card.ontouchstart=e=>startX=e.touches[0].clientX;
+card.ontouchend=e=>{
+  let endX=e.changedTouches[0].clientX;
+  if(startX-endX>50 && index<cards.length-1) swipe("left");
+  if(endX-startX>50 && index>0) swipe("right");
+};
+
+envelope.onclick=()=>{
+  envelope.classList.add("open");
+  setTimeout(()=>{
+    envelope.style.display="none";
+    stack.style.display="block";
+    render();
+    yt.postMessage('{"event":"command","func":"playVideo"}',"*");
+    yt.postMessage('{"event":"command","func":"unMute"}',"*");
+  },800);
+};
+
+function openModal(){modal.style.display="flex"}
+function closeModal(){modal.style.display="none"}
+
+setInterval(()=>{
+  const p=document.createElement("div");
+  p.className="petal";
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=10+Math.random()*10+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),10000);
+},1000);
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, addDoc, collection, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC7ihEC108GG-FL7cJWidiC4uc2B-7kv_Y",
+  authDomain: "msgl-157b0.firebaseapp.com",
+  projectId: "msgl-157b0",
+  storageBucket: "msgl-157b0.firebasestorage.app",
+  messagingSenderId: "862235386858",
+  appId: "1:862235386858:web:c2123cb0c7405d1fba0893"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// We attach it to window so the HTML button can find it
+window.saveOnline = async function(){
+  const textInput = document.getElementById("userMessage");
+  const text = textInput.value.trim();
+
+  // This is the part that checks if it's empty
+  if(!text){
+	alert("Madam, kush likh taan lo pehla!");
+    Swal.fire({
+      title: 'Wait! ❤️',
+      text: "Madam, kush likh taan lo pehla!",
+      icon: 'info',
+      confirmButtonText: 'Theek aa'
+    });
+    return; // Stops the function here
+  }
+
+  try {
+    await addDoc(collection(db,"messages"),{
+        message: text,
+        time: serverTimestamp()
+    });
+    
+    Swal.fire({
+      title: 'Bhej dita! ❤️',
+      text: "Chl gya ji message safely!",
+      icon: 'success',
+      timer: 3000
+    });
+    
+    textInput.value = ""; // Clear the box
+    closeModal();
+    
+  } catch(e) {
+    console.error("Error adding document: ", e);
+    // Fallback if there is a connection error
+    Swal.fire({
+      text: "Sent! (Net issue lagda par try ho gya)",
+      icon: 'info'
+    });
+    closeModal();
+  }
+};
+</script>
+
+</body>
+</html>
