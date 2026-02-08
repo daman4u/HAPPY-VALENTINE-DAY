@@ -301,10 +301,10 @@ text-shadow:
   </div>
 </div>
 
-<iframe id="yt"
-src="https://www.youtube.com/embed/1rP2BWtl8Ho?enablejsapi=1&mute=1"
-allow="autoplay"
-style="display:none"></iframe>
+<audio id="bgMusic" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
 
 <script>
 const gifs = {
@@ -335,7 +335,7 @@ const cards=[
 let index=0,startX=0;
 const card=document.getElementById("card");
 const dots=document.getElementById("dots");
-const yt=document.getElementById("yt").contentWindow;
+// const yt=document.getElementById("yt").contentWindow;
 
 function createHeartPop() {
   for(let i=0; i<3; i++) {
@@ -472,15 +472,21 @@ card.ontouchend=e=>{
   if(endX-startX>50 && index>0) swipe("right");
 };
 
-envelope.onclick=()=>{
+const music = document.getElementById("bgMusic");
+
+envelope.onclick = () => {
   envelope.classList.add("open");
-  setTimeout(()=>{
-    envelope.style.display="none";
-    stack.style.display="block";
+
+  setTimeout(() => {
+    envelope.style.display = "none";
+    stack.style.display = "block";
     render();
-    yt.postMessage('{"event":"command","func":"playVideo"}',"*");
-    yt.postMessage('{"event":"command","func":"unMute"}',"*");
-  },800);
+
+    music.volume = 0.5; // soft romantic volume
+    music.play().catch(() => {
+      console.log("Autoplay blocked, user interaction needed");
+    });
+  }, 800);
 };
 
 function openModal(){modal.style.display="flex"}
