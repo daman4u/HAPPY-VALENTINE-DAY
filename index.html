@@ -38,6 +38,22 @@ text-shadow:
     0 0 40px #00d4ff;
 }
 
+/* background stars */
+
+.star{
+  position:fixed;
+  width:2px;
+  height:2px;
+  background:white;
+  opacity:.6;
+  animation:twinkle 3s infinite ease-in-out;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.2;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.8)}
+}
+
+
   /* 🌹 Falling Petals */
   .petal{
     position:fixed;
@@ -108,7 +124,15 @@ text-shadow:
     width:90%;
     max-width:450px;
     text-align:center;
-  }
+  }@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  25%{transform:scale(1.05)}
+  50%{transform:scale(0.98)}
+  75%{transform:scale(1.06)}
+}
+.heartbeat{
+  animation:heartbeat 1.2s infinite;
+}
   .card{
     background:rgba(28, 0, 10, 0.95);
     border-radius:30px;
@@ -281,6 +305,34 @@ text-shadow:
   .swal2-title, .swal2-html-container { color: #fff !important; }
   .swal2-confirm { background-color: #ff4d6d !important; border-radius: 50px !important; }
   .swal2-cancel { background-color: #444 !important; border-radius: 50px !important; }
+  .music-btn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 3000;
+  box-shadow: 0 0 15px rgba(255,77,109,0.6);
+  transition: .3s;
+}
+
+.music-btn:hover{
+  transform: scale(1.1);
+  background:#ff758f;
+}
+.music-btn{
+  display:none;
+}
+
+
+
 </style>
 </head>
 
@@ -304,9 +356,22 @@ text-shadow:
 <audio id="bgMusic" loop>
   <source src="love.mp3" type="audio/mpeg">
 </audio>
+<div id="musicControl" class="music-btn" onclick="toggleMusic()">⏸</div>
 
 
 <script>
+function toggleMusic(){
+  const btn = document.getElementById("musicControl");
+
+  if(music.paused){
+    music.play();
+    btn.innerHTML = "⏸";   // show pause icon
+  } else {
+    music.pause();
+    btn.innerHTML = "▶";   // show play icon
+  }
+}
+
 const gifs = {
   intro: "cute.gif",
   rose: "ROSE.gif",
@@ -318,6 +383,61 @@ const gifs = {
   kiss: "KISS.gif",
   valentine: "VALENTINE.gif"
 };
+
+// celebrations on yes 
+function confettiBurst(x = window.innerWidth/2, y = window.innerHeight/2){
+  const particles = 70; // how many sparks
+
+  for(let i=0;i<particles;i++){
+    const p = document.createElement("div");
+
+    // basic style
+    p.style.position = "fixed";
+    p.style.width = "6px";
+    p.style.height = "6px";
+    p.style.borderRadius = "50%";
+    p.style.pointerEvents = "none";
+    p.style.left = x + "px";
+    p.style.top = y + "px";
+
+    // random firework colors
+    p.style.background = `hsl(${Math.random()*360},100%,60%)`;
+    p.style.boxShadow = `0 0 10px ${p.style.background}, 0 0 20px ${p.style.background}`;
+
+    document.body.appendChild(p);
+
+    // random direction explosion
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 80 + Math.random() * 150;
+
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance;
+
+    // animate explosion
+    p.animate([
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx}px, ${dy}px) scale(0.3)`, opacity: 0 }
+    ], {
+      duration: 900 + Math.random()*400,
+      easing: "cubic-bezier(.17,.67,.83,.67)"
+    });
+
+    // remove after animation
+    setTimeout(()=>p.remove(),1300);
+  }
+}
+
+
+// stars
+
+for(let i=0;i<80;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDelay=Math.random()*3+"s";
+  document.body.appendChild(s);
+}
 
 const cards=[
  // {t:"Happy Valentine’s, Lipsy", m:"Those who are unattractive know that if someone loves them, they love them for who they truly are. Beautiful people never know whom to trust; perhaps that is why you don’t trust me ❤️", g: gifs.intro},
@@ -431,7 +551,7 @@ function typeText(el, html, speed = 60) {
   if (index === cards.length - 1) {
     html += `
       <div class="choice">
-        <div onclick="openModal()">YES 💖</div>
+        <div onclick="confettiBurst(event.clientX,event.clientY);openModal()">YES 💖</div>
         <div onclick="handleNo()">NO 😊</div>
       </div>`;
   }
@@ -486,6 +606,8 @@ envelope.onclick = () => {
     music.play().catch(() => {
       console.log("Autoplay blocked, user interaction needed");
     });
+    document.getElementById("musicControl").style.display = "flex";
+
   }, 800);
 };
 
@@ -548,6 +670,21 @@ window.saveOnline = async function(){
       icon: 'success',
       timer: 3000
     });
+    // 🎆 Celebration Fireworks
+for(let i=0;i<5;i++){
+  setTimeout(()=>{
+    confettiBurst(
+      Math.random()*window.innerWidth,
+      Math.random()*window.innerHeight*0.6
+    );
+  }, i*600);
+}
+Swal.fire({
+ title:"You Just Made My Day ❤️",
+ text:"Now it's your turn to smile every time you remember this.",
+ confirmButtonText:"Okay ☺️"
+});
+
     
     textInput.value = ""; // Clear the box
     closeModal();
