@@ -684,6 +684,10 @@ async function handleNo() {
         timer: 3000,
         showConfirmButton: false
       });
+		setTimeout(() => {
+          writeNameInStars();
+        }, 5000);
+
     }
   }
 }
@@ -874,7 +878,7 @@ setTimeout(() => {
 
 setTimeout(() => {
     writeNameInStars();
-  }, 9000);
+  }, 7300);
 
     
     textInput.value = ""; // Clear the box
